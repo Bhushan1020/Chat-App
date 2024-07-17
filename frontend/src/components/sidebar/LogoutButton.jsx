@@ -1,18 +1,17 @@
 import { BiLogOut } from "react-icons/bi";
+import useLogout from "../../hooks/useLogout";
 
 const LogoutButton = () => {
-  return (
-    <div style={{ marginTop: "auto" }}>
-      <BiLogOut
-        style={{
-          width: "24px", // Equivalent to Tailwind's 'w-6'
-          height: "24px", // Equivalent to Tailwind's 'h-6'
-          color: "white", // Equivalent to Tailwind's 'text-white'
-          cursor: "pointer" // Equivalent to Tailwind's 'cursor-pointer'
-        }}
-      />
-    </div>
-  );
-};
+	const { loading, logout } = useLogout();
 
+	return (
+		<div className='mt-auto'>
+			{!loading ? (
+				<BiLogOut className='w-6 h-6 text-white cursor-pointer' onClick={logout} />
+			) : (
+				<span className='loading loading-spinner'></span>
+			)}
+		</div>
+	);
+};
 export default LogoutButton;

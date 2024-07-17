@@ -1,46 +1,50 @@
-
-const styles = {
-  flex: {
-    display: 'flex',
-  },
-  formControl: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'start',
-    margin: '0 8px',
-  },
-  label: {
-    display: 'flex',
-    gap: '8px',
-    cursor: 'pointer',
-  },
-  labelText: {
-    fontSize: '14px',
-    lineHeight: '20px',
-    color: '#f3f4f5', // Tailwind's text-slate-900
-  },
-  checkbox: {
-    borderColor: '#9ea1a5', // Tailwind's border-slate-900
-  },
+const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
+	return (
+		<div className='flex'>
+			<div className='form-control'>
+				<label className={`label gap-2 cursor-pointer ${selectedGender === "male" ? "selected" : ""} `}>
+					<span className='label-text'>Male</span>
+					<input
+						type='checkbox'
+						className='checkbox border-slate-900'
+						checked={selectedGender === "male"}
+						onChange={() => onCheckboxChange("male")}
+					/>
+				</label>
+			</div>
+			<div className='form-control'>
+				<label className={`label gap-2 cursor-pointer  ${selectedGender === "female" ? "selected" : ""}`}>
+					<span className='label-text'>Female</span>
+					<input
+						type='checkbox'
+						className='checkbox border-slate-900'
+						checked={selectedGender === "female"}
+						onChange={() => onCheckboxChange("female")}
+					/>
+				</label>
+			</div>
+		</div>
+	);
 };
-
-const GenderCheckbox = () => {
-  return (
-    <div style={styles.flex}>
-      <div style={styles.formControl}>
-        <label style={styles.label}>
-          <span style={styles.labelText}>Male</span>
-          <input type='checkbox' style={styles.checkbox} />
-        </label>
-      </div>
-      <div style={styles.formControl}>
-        <label style={styles.label}>
-          <span style={styles.labelText}>Female</span>
-          <input type='checkbox' style={styles.checkbox} />
-        </label>
-      </div>
-    </div>
-  );
-};
-
 export default GenderCheckbox;
+
+// STARTER CODE FOR THIS FILE
+// const GenderCheckbox = () => {
+// 	return (
+// 		<div className='flex'>
+// 			<div className='form-control'>
+// 				<label className={`label gap-2 cursor-pointer`}>
+// 					<span className='label-text'>Male</span>
+// 					<input type='checkbox' className='checkbox border-slate-900' />
+// 				</label>
+// 			</div>
+// 			<div className='form-control'>
+// 				<label className={`label gap-2 cursor-pointer`}>
+// 					<span className='label-text'>Female</span>
+// 					<input type='checkbox' className='checkbox border-slate-900' />
+// 				</label>
+// 			</div>
+// 		</div>
+// 	);
+// };
+// export default GenderCheckbox;

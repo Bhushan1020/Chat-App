@@ -1,63 +1,68 @@
+import { useEffect } from "react";
+import useConversation from "../../zustand/useConversation";
 import MessageInput from "./MessageInput";
 import Messages from "./Messages";
 import { TiMessages } from "react-icons/ti";
+import { useAuthContext } from "../../context/AuthContext";
 
 const MessageContainer = () => {
-  const noChatSelected = false;
+	const { selectedConversation, setSelectedConversation } = useConversation();
 
-  return (
-    <div style={{ minWidth: '450px', display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      { noChatSelected ? <NoChatSelected /> : (
-        <>
-          <div style={{ backgroundColor: '#2c3e50', padding: '4px', marginBottom: '2px' }}>
-            <span style={{ color: '#ffffff' }}>To:</span> <span style={{ color: '#ddcfcf', fontWeight: 'bold' }}>John Doe</span>
-          </div>
-          <div style={{ flex: '1' }}>
-            <Messages />
-          </div>
-          <div style={{ position: 'sticky', bottom: '0' }}>
-            <MessageInput />
-          </div>
-        </>
-      )}
-    </div>
-  );
+	useEffect(() => {
+		// cleanup function (unmounts)
+		return () => setSelectedConversation(null);
+	}, [setSelectedConversation]);
+
+	return (
+		<div className='md:min-w-[450px] flex flex-col'>
+			{!selectedConversation ? (
+				<NoChatSelected />
+			) : (
+				<>
+					{/* Header */}
+					<div className='bg-slate-500 px-4 py-2 mb-2'>
+						<span className='label-text'>To:</span>{" "}
+						<span className='text-gray-900 font-bold'>{selectedConversation.fullName}</span>
+					</div>
+					<Messages />
+					<MessageInput />
+				</>
+			)}
+		</div>
+	);
 };
+export default MessageContainer;
 
 const NoChatSelected = () => {
-
-  const noChatSelectedStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%'
-  };
-
-  const textStyle = {
-    padding: '0 16px',
-    textAlign: 'center',
-    color: '#d1d5db',
-    fontWeight: '600',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '8px'
-  };
-
-  const iconStyle = {
-    fontSize: '3rem'
-  };
-
-  return (
-    <div style={noChatSelectedStyle}>
-      <div style={textStyle}>
-        <p>Welcome 👋 Bhushan ❄</p>
-        <p>Select a chat to start messaging</p>
-        <TiMessages style={iconStyle} />
-      </div>
-    </div>
-  );
+	const { authUser } = useAuthContext();
+	return (
+		<div className='flex items-center justify-center w-full h-full'>
+			<div className='px-4 text-center sm:text-lg md:text-xl text-gray-200 font-semibold flex flex-col items-center gap-2'>
+				<p>Welcome 👋 {authUser.fullName} ❄</p>
+				<p>Select a chat to start messaging</p>
+				<TiMessages className='text-3xl md:text-6xl text-center' />
+			</div>
+		</div>
+	);
 };
 
-export default MessageContainer;
+// STARTER CODE SNIPPET
+// import MessageInput from "./MessageInput";
+// import Messages from "./Messages";
+
+// const MessageContainer = () => {
+// 	return (
+// 		<div className='md:min-w-[450px] flex flex-col'>
+// 			<>
+// 				{/* Header */}
+// 				<div className='bg-slate-500 px-4 py-2 mb-2'>
+// 					<span className='label-text'>To:</span> <span className='text-gray-900 font-bold'>John doe</span>
+// 				</div>
+
+// 				<Messages />
+// 				<MessageInput />
+// 			</>
+// 		</div>
+// 	);
+// };
+// export default MessageContainer;

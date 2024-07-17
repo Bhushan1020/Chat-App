@@ -1,121 +1,170 @@
+import { Link } from "react-router-dom";
 import GenderCheckbox from "./GenderCheckbox";
-
+import { useState } from "react";
+import useSignup from "../../hooks/useSignup";
 
 const SignUp = () => {
-  return (
-    <div style={styles.container}>
-      <div style={styles.formContainer}>
-        <h1 style={styles.title}>
-          Sign Up <span style={styles.highlight}>ChatApp</span>
-        </h1>
+	const [inputs, setInputs] = useState({
+		fullName: "",
+		username: "",
+		password: "",
+		confirmPassword: "",
+		gender: "",
+	});
 
-        <form>
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>
-              <span style={styles.labelText}>Full Name</span>
-            </label>
-            <input type="text" placeholder="John Doe" style={styles.input} />
-          </div>
+	const { loading, signup } = useSignup();
 
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>
-              <span style={styles.labelText}>Username</span>
-            </label>
-            <input type="text" placeholder="johndoe" style={styles.input} />
-          </div>
+	const handleCheckboxChange = (gender) => {
+		setInputs({ ...inputs, gender });
+	};
 
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>
-              <span style={styles.labelText}>Password</span>
-            </label>
-            <input type="password" placeholder="Enter Password" style={styles.input} />
-          </div>
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await signup(inputs);
+	};
 
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>
-              <span style={styles.labelText}>Confirm Password</span>
-            </label>
-            <input type="password" placeholder="Confirm Password" style={styles.input} />
-          </div>
+	return (
+		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
+			<div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+				<h1 className='text-3xl font-semibold text-center text-gray-300'>
+					Sign Up <span className='text-blue-500'> ChatApp</span>
+				</h1>
 
-          <GenderCheckbox />
+				<form onSubmit={handleSubmit}>
+					<div>
+						<label className='label p-2'>
+							<span className='text-base label-text'>Full Name</span>
+						</label>
+						<input
+							type='text'
+							placeholder='John Doe'
+							className='w-full input input-bordered  h-10'
+							value={inputs.fullName}
+							onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
+						/>
+					</div>
 
-          <a href="#" style={styles.link}>
-            Already have an account?
-          </a>
+					<div>
+						<label className='label p-2 '>
+							<span className='text-base label-text'>Username</span>
+						</label>
+						<input
+							type='text'
+							placeholder='johndoe'
+							className='w-full input input-bordered h-10'
+							value={inputs.username}
+							onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+						/>
+					</div>
 
-          <div>
-            <button style={styles.button}>Sign Up</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+					<div>
+						<label className='label'>
+							<span className='text-base label-text'>Password</span>
+						</label>
+						<input
+							type='password'
+							placeholder='Enter Password'
+							className='w-full input input-bordered h-10'
+							value={inputs.password}
+							onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+						/>
+					</div>
+
+					<div>
+						<label className='label'>
+							<span className='text-base label-text'>Confirm Password</span>
+						</label>
+						<input
+							type='password'
+							placeholder='Confirm Password'
+							className='w-full input input-bordered h-10'
+							value={inputs.confirmPassword}
+							onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
+						/>
+					</div>
+
+					<GenderCheckbox onCheckboxChange={handleCheckboxChange} selectedGender={inputs.gender} />
+
+					<Link
+						to={"/login"}
+						className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block'
+						href='#'
+					>
+						Already have an account?
+					</Link>
+
+					<div>
+						<button className='btn btn-block btn-sm mt-2 border border-slate-700' disabled={loading}>
+							{loading ? <span className='loading loading-spinner'></span> : "Sign Up"}
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	);
 };
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height : '350px',
-    minWidth: '24rem',
-    margin: '0 auto',
-  },
-  formContainer: {
-    width: '100%',
-    padding: '1.5rem',
-    borderRadius: '0.5rem',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    backgroundColor: 'rgba(107, 114, 128, 0.3)',
-    backdropFilter: 'blur(10px)',
-  },
-  title: {
-    fontSize: '1.875rem',
-    fontWeight: '600',
-    textAlign: 'center',
-    color: '#D1D5DB',
-  },
-  highlight: {
-    color: '#3B82F6',
-  },
-  inputGroup: {
-    marginBottom: '1rem',
-  },
-  label: {
-    padding: '0.5rem 0',
-  },
-  labelText: {
-    fontSize: '1rem',
-    color : 'white'
-  },
-  input: {
-    width: '100%',
-    height: '1.5rem', // Reduced height by 40%
-    backgroundColor: 'black', // Set background color to black
-    borderColor: '#D1D5DB',
-    borderRadius: '0.375rem',
-    padding: '0.5rem',
-    color: 'white', // Added white text color for better visibility
-  },
-  link: {
-    fontSize: '0.875rem',
-    color: '#3B82F6',
-    textDecoration: 'none',
-    marginTop: '0.5rem',
-    display: 'inline-block',
-  },
-  button: {
-    display: 'block',
-    width: '100%',
-    padding: '0.5rem',
-    marginTop: '0.5rem',
-    border: '1px solid #374151',
-    borderRadius: '0.375rem',
-    backgroundColor: '#F9FAFB',
-  },
-};
-
-
 export default SignUp;
+
+// STARTER CODE FOR THE SIGNUP COMPONENT
+// import GenderCheckbox from "./GenderCheckbox";
+
+// const SignUp = () => {
+// 	return (
+// 		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
+// 			<div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+// 				<h1 className='text-3xl font-semibold text-center text-gray-300'>
+// 					Sign Up <span className='text-blue-500'> ChatApp</span>
+// 				</h1>
+
+// 				<form>
+// 					<div>
+// 						<label className='label p-2'>
+// 							<span className='text-base label-text'>Full Name</span>
+// 						</label>
+// 						<input type='text' placeholder='John Doe' className='w-full input input-bordered  h-10' />
+// 					</div>
+
+// 					<div>
+// 						<label className='label p-2 '>
+// 							<span className='text-base label-text'>Username</span>
+// 						</label>
+// 						<input type='text' placeholder='johndoe' className='w-full input input-bordered h-10' />
+// 					</div>
+
+// 					<div>
+// 						<label className='label'>
+// 							<span className='text-base label-text'>Password</span>
+// 						</label>
+// 						<input
+// 							type='password'
+// 							placeholder='Enter Password'
+// 							className='w-full input input-bordered h-10'
+// 						/>
+// 					</div>
+
+// 					<div>
+// 						<label className='label'>
+// 							<span className='text-base label-text'>Confirm Password</span>
+// 						</label>
+// 						<input
+// 							type='password'
+// 							placeholder='Confirm Password'
+// 							className='w-full input input-bordered h-10'
+// 						/>
+// 					</div>
+
+// 					<GenderCheckbox />
+
+// 					<a className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block' href='#'>
+// 						Already have an account?
+// 					</a>
+
+// 					<div>
+// 						<button className='btn btn-block btn-sm mt-2 border border-slate-700'>Sign Up</button>
+// 					</div>
+// 				</form>
+// 			</div>
+// 		</div>
+// 	);
+// };
+// export default SignUp;

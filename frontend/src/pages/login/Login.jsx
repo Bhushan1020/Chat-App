@@ -1,118 +1,106 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import useLogin from "../../hooks/useLogin";
 
 const Login = () => {
-  const styles = {
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minWidth: '24rem',
-      margin: '0 auto',
-    },
-    card: {
-      width: '80%',
-      padding: '1.5rem',
-      borderRadius: '0.5rem',
-      boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)',
-      backgroundColor: 'rgba(255, 255, 255, 0.0)',
-      backdropFilter: 'blur(10px)',
-    },
-    title: {
-      fontSize: '1.875rem',
-      fontWeight: '600',
-      textAlign: 'center',
-      color: '#D1D5DB',
-    },
-    titleHighlight: {
-      color: '#3B82F6',
-    },
-    form: {
-      width: '100%',
-    },
-    label: {
-      padding: '0.5rem',
-    },
-    labelText: {
-      fontSize: '1rem',
-      color:'white',
-    },
-    input: {
-      width: '100%',
-      height: '2rem', // Reduced height by 20% from original (2.5rem to 2rem)
-      backgroundColor: '#000000', // Set background color to black
-      color: '#FFFFFF', // Set text color to white for better contrast
-      borderColor: '#E5E7EB',
-      borderWidth: '1px',
-      borderRadius: '0.25rem',
-      padding: '0.5rem',
-    },
-    gap: {
-      marginBottom: '1rem', // Added gap between fields
-    },
-    link: {
-      fontSize: '0.875rem',
-      color: '#2563EB',
-      textDecoration: 'underline',
-      marginTop: '0.5rem',
-      display: 'inline-block',
-    },
-    button: {
-      width: '100%',
-      height: '2.5rem',
-      backgroundColor: '#3B82F6',
-      color: '#FFFFFF',
-      fontSize: '1rem',
-      fontWeight: '600',
-      marginTop: '0.5rem',
-      border: 'none',
-      borderRadius: '0.25rem',
-      cursor: 'pointer',
-    },
-  };
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
 
-  return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>
-          Login
-          <span style={styles.titleHighlight}> ChatApp</span>
-        </h1>
+	const { loading, login } = useLogin();
 
-        <form style={styles.form}>
-          <div style={styles.gap}>
-            <label style={styles.label}>
-              <span style={styles.labelText}>Username</span>
-            </label>
-            <input
-              type='text'
-              placeholder='Enter username'
-              style={styles.input}
-            />
-          </div>
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await login(username, password);
+	};
 
-          <div style={styles.gap}>
-            <label style={styles.label}>
-              <span style={styles.labelText}>Password</span>
-            </label>
-            <input
-              type='password'
-              placeholder='Enter Password'
-              style={styles.input}
-            />
-          </div>
-          <a href='#' style={styles.link}>
-            {"Don't"} have an account?
-          </a>
+	return (
+		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
+			<div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+				<h1 className='text-3xl font-semibold text-center text-gray-300'>
+					Login
+					<span className='text-blue-500'> ChatApp</span>
+				</h1>
 
-          <div>
-            <button type='submit' style={styles.button}>
-              Login
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+				<form onSubmit={handleSubmit}>
+					<div>
+						<label className='label p-2'>
+							<span className='text-base label-text'>Username</span>
+						</label>
+						<input
+							type='text'
+							placeholder='Enter username'
+							className='w-full input input-bordered h-10'
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
+						/>
+					</div>
+
+					<div>
+						<label className='label'>
+							<span className='text-base label-text'>Password</span>
+						</label>
+						<input
+							type='password'
+							placeholder='Enter Password'
+							className='w-full input input-bordered h-10'
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+						/>
+					</div>
+					<Link to='/signup' className='text-sm  hover:underline hover:text-blue-600 mt-2 inline-block'>
+						{"Don't"} have an account?
+					</Link>
+
+					<div>
+						<button className='btn btn-block btn-sm mt-2' disabled={loading}>
+							{loading ? <span className='loading loading-spinner '></span> : "Login"}
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	);
 };
-
 export default Login;
+
+// STARTER CODE FOR THIS FILE
+// const Login = () => {
+// 	return (
+// 		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
+// 			<div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+// 				<h1 className='text-3xl font-semibold text-center text-gray-300'>
+// 					Login
+// 					<span className='text-blue-500'> ChatApp</span>
+// 				</h1>
+
+// 				<form>
+// 					<div>
+// 						<label className='label p-2'>
+// 							<span className='text-base label-text'>Username</span>
+// 						</label>
+// 						<input type='text' placeholder='Enter username' className='w-full input input-bordered h-10' />
+// 					</div>
+
+// 					<div>
+// 						<label className='label'>
+// 							<span className='text-base label-text'>Password</span>
+// 						</label>
+// 						<input
+// 							type='password'
+// 							placeholder='Enter Password'
+// 							className='w-full input input-bordered h-10'
+// 						/>
+// 					</div>
+// 					<a href='#' className='text-sm  hover:underline hover:text-blue-600 mt-2 inline-block'>
+// 						{"Don't"} have an account?
+// 					</a>
+
+// 					<div>
+// 						<button className='btn btn-block btn-sm mt-2'>Login</button>
+// 					</div>
+// 				</form>
+// 			</div>
+// 		</div>
+// 	);
+// };
+// export default Login;
